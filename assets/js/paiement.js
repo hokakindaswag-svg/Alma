@@ -11,7 +11,7 @@
    « Acheter maintenant » et « Passer commande » restent inactifs. */
 
 window.ALMA_PAIEMENT = {
-  defaut: "",
+  defaut: "https://t.trklinkx.com/click?pid=5417&offer_id=13057&sub3=IM",
   liens: {
     jeanne: "",
     romy: "",
