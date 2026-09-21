@@ -159,7 +159,7 @@
       zone.innerHTML =
         '<div class="panier-vide">' +
           '<h1 class="panier-titre">Votre panier est vide</h1>' +
-          '<p>Cinq modèles vous attendent, tous à 19,99 €.</p>' +
+          '<p>Onze modèles vous attendent, tous à 19,99 €.</p>' +
           '<a class="btn" href="' + BASE + 'sacs.html">Voir les sacs</a>' +
         "</div>";
       return;

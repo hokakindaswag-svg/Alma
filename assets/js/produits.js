@@ -1,62 +1,144 @@
-/* Catalogue Studio Alma — cinq modèles, un seul prix.
+/* Catalogue Studio Alma — onze modèles, un seul prix.
    Pour remplacer une photo : déposez votre fichier dans assets/img/
-   sous le même nom (jeanne-1.jpg…) et mettez à jour "images" ci-dessous. */
+   sous le même nom (jeanne-1.jpg…) ou ajoutez-la au tableau "images". */
 window.ALMA_PRIX = 19.99;
+
+var ALMA_DIMENSIONS = "Format city bag : de quoi emporter l'essentiel — téléphone, " +
+  "portefeuille, trousse et petit carnet. Anses portées main ou épaule, bandoulière amovible.";
+var ALMA_MATIERES = "Extérieur façon cuir vieilli, doublure textile, finitions métal doré " +
+  "vieilli. Zip avant et attaches à boucles.";
 
 window.ALMA_PRODUITS = [
   {
     id: "jeanne",
     nom: "Le Jeanne",
     type: "City bag",
+    couleur: "Bleu turquoise",
     prix: 19.99,
-    images: ["assets/img/jeanne-1.svg", "assets/img/jeanne-2.svg"],
-    description: "Un city bag féminin pensé pour accompagner les journées qui ne s'arrêtent jamais.",
-    details: "Sac porté épaule à rabat, format structuré. Fermeture aimantée, une poche intérieure plate.",
-    dimensions: "26 × 18 × 9 cm — bandoulière réglable jusqu'à 120 cm.",
-    matieres: "Extérieur enduit façon cuir grainé, doublure coton recyclé, finitions ton sur ton."
+    images: ["assets/img/jeanne-1.jpg"],
+    description: "Un city bag coloré et féminin, parfait pour apporter une touche de fraîcheur aux looks du quotidien.",
+    details: "City bag en bleu turquoise. Ouverture zippée, poche avant, anses tressées et bandoulière amovible.",
+    dimensions: ALMA_DIMENSIONS,
+    matieres: ALMA_MATIERES
   },
   {
     id: "romy",
     nom: "Le Romy",
     type: "City bag",
+    couleur: "Chocolat",
     prix: 19.99,
-    images: ["assets/img/romy-1.svg", "assets/img/romy-2.svg"],
-    description: "La forme baguette, portée près du corps, pour les soirs où l'on part léger.",
-    details: "Anse courte portée épaule, fermeture zippée, silhouette allongée.",
-    dimensions: "30 × 14 × 7 cm — anse 22 cm.",
-    matieres: "Extérieur enduit lisse, doublure coton recyclé, zip ton bronze mat."
+    images: ["assets/img/romy-1.jpg"],
+    description: "Un city bag intemporel dans une teinte chocolat profonde, facile à porter au quotidien.",
+    details: "City bag en chocolat. Ouverture zippée, poche avant, anses tressées et bandoulière amovible.",
+    dimensions: ALMA_DIMENSIONS,
+    matieres: ALMA_MATIERES
   },
   {
     id: "louise",
     nom: "Le Louise",
     type: "City bag",
+    couleur: "Taupe",
     prix: 19.99,
-    images: ["assets/img/louise-1.svg", "assets/img/louise-2.svg"],
-    description: "Le format qui prend tout : l'ordinateur, le carnet, la bouteille d'eau et le reste.",
-    details: "Cabas à deux anses, ouverture large, poche zippée intérieure.",
-    dimensions: "34 × 28 × 12 cm — anses 26 cm.",
-    matieres: "Extérieur enduit grainé, doublure coton recyclé, base renforcée."
+    images: ["assets/img/louise-1.jpg"],
+    description: "Un modèle doux et élégant dans une teinte taupe, pensé pour accompagner toutes vos journées.",
+    details: "City bag en taupe. Ouverture zippée, poche avant, anses tressées et bandoulière amovible.",
+    dimensions: ALMA_DIMENSIONS,
+    matieres: ALMA_MATIERES
   },
   {
     id: "victoire",
     nom: "Le Victoire",
     type: "City bag",
+    couleur: "Noir",
     prix: 19.99,
-    images: ["assets/img/victoire-1.svg", "assets/img/victoire-2.svg"],
-    description: "Une forme croissant, souple, qui se pose naturellement sur l'épaule.",
-    details: "Sac souple porté épaule, fermeture zippée, doublure légère.",
-    dimensions: "32 × 16 × 8 cm — anse 24 cm.",
-    matieres: "Extérieur enduit souple, doublure coton recyclé, teinte bordeaux profond."
+    images: ["assets/img/victoire-1.jpg"],
+    description: "Un city bag noir et essentiel, une pièce facile à associer à toutes vos tenues.",
+    details: "City bag en noir. Ouverture zippée, poche avant, anses tressées et bandoulière amovible.",
+    dimensions: ALMA_DIMENSIONS,
+    matieres: ALMA_MATIERES
   },
   {
     id: "margot",
     nom: "Le Margot",
     type: "City bag",
+    couleur: "Noir brillant",
     prix: 19.99,
-    images: ["assets/img/margot-1.svg", "assets/img/margot-2.svg"],
-    description: "Le petit format des jours pressés : le téléphone, les clés, et on y va.",
-    details: "Mini sac porté croisé, rabat aimanté, bandoulière fine.",
-    dimensions: "18 × 15 × 6 cm — bandoulière réglable jusqu'à 130 cm.",
-    matieres: "Extérieur enduit grainé, doublure coton recyclé, finitions taupe."
+    images: ["assets/img/margot-1.jpg"],
+    description: "Une version noire brillante au caractère affirmé, parfaite pour les looks de jour comme de nuit.",
+    details: "City bag en noir brillant. Ouverture zippée, poche avant, anses tressées et bandoulière amovible.",
+    dimensions: ALMA_DIMENSIONS,
+    matieres: ALMA_MATIERES
+  },
+  {
+    id: "clemence",
+    nom: "Le Clémence",
+    type: "City bag",
+    couleur: "Beige taupe",
+    prix: 19.99,
+    images: ["assets/img/clemence-1.jpg"],
+    description: "Un modèle neutre et lumineux, idéal pour une allure douce et élégante.",
+    details: "City bag en beige taupe. Ouverture zippée, poche avant, anses tressées et bandoulière amovible.",
+    dimensions: ALMA_DIMENSIONS,
+    matieres: ALMA_MATIERES
+  },
+  {
+    id: "elise",
+    nom: "Le Élise",
+    type: "City bag",
+    couleur: "Argent",
+    prix: 19.99,
+    images: ["assets/img/elise-1.jpg"],
+    description: "Un city bag argenté qui apporte une touche lumineuse et moderne à chaque tenue.",
+    details: "City bag argenté. Ouverture zippée, poche avant, anses tressées et bandoulière amovible.",
+    dimensions: ALMA_DIMENSIONS,
+    matieres: ALMA_MATIERES
+  },
+  {
+    id: "camille",
+    nom: "Le Camille",
+    type: "City bag",
+    couleur: "Vert kaki",
+    prix: 19.99,
+    images: ["assets/img/camille-1.jpg"],
+    description: "Un modèle kaki au caractère naturel, parfait pour les looks décontractés et citadins.",
+    details: "City bag en vert kaki. Ouverture zippée, poche avant, anses tressées et bandoulière amovible.",
+    dimensions: ALMA_DIMENSIONS,
+    matieres: ALMA_MATIERES
+  },
+  {
+    id: "adele",
+    nom: "Le Adèle",
+    type: "City bag",
+    couleur: "Bleu nuit",
+    prix: 19.99,
+    images: ["assets/img/adele-1.jpg"],
+    description: "Un city bag bleu nuit, sobre et élégant, avec une allure intemporelle.",
+    details: "City bag en bleu nuit. Ouverture zippée, poche avant, anses tressées et bandoulière amovible.",
+    dimensions: ALMA_DIMENSIONS,
+    matieres: ALMA_MATIERES
+  },
+  {
+    id: "chloe",
+    nom: "Le Chloé",
+    type: "City bag",
+    couleur: "Brun chocolat",
+    prix: 19.99,
+    images: ["assets/img/chloe-1.jpg"],
+    description: "Un modèle brun chaleureux qui s'accorde parfaitement aux looks de saison.",
+    details: "City bag en brun chocolat. Ouverture zippée, poche avant, anses tressées et bandoulière amovible.",
+    dimensions: ALMA_DIMENSIONS,
+    matieres: ALMA_MATIERES
+  },
+  {
+    id: "madeleine",
+    nom: "Le Madeleine",
+    type: "City bag",
+    couleur: "Brun foncé",
+    prix: 19.99,
+    images: ["assets/img/madeleine-1.jpg"],
+    description: "Un city bag brun foncé au style intemporel, pensé pour accompagner le quotidien.",
+    details: "City bag en brun foncé. Ouverture zippée, poche avant, anses tressées et bandoulière amovible.",
+    dimensions: ALMA_DIMENSIONS,
+    matieres: ALMA_MATIERES
   }
 ];

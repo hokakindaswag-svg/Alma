@@ -1,18 +1,20 @@
 # -*- coding: utf-8 -*-
 """Génère les pages HTML de Studio Alma à partir d'un gabarit commun.
    python3 tools/build.py  —  à relancer après modification d'un gabarit."""
-import json, os, re
+import json, os, subprocess
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 PRIX = "19,99 €"
 
-# --- catalogue : lu depuis assets/js/produits.js pour n'avoir qu'une source ---
+# --- catalogue : évalué depuis assets/js/produits.js pour n'avoir qu'une source ---
 def catalogue():
-    src = open(os.path.join(ROOT, "assets/js/produits.js"), encoding="utf-8").read()
-    bloc = src.split("window.ALMA_PRODUITS =", 1)[1].rsplit("];", 1)[0] + "]"
-    bloc = re.sub(r"(\w+):", r'"\1":', bloc)          # clés -> JSON
-    bloc = re.sub(r",(\s*[\]}])", r"\1", bloc)
-    return json.loads(bloc)
+    script = os.path.join(ROOT, "assets/js/produits.js")
+    sortie = subprocess.run(
+        ["node", "-e",
+         "global.window={};require(process.argv[1]);"
+         "process.stdout.write(JSON.stringify(window.ALMA_PRODUITS));", script],
+        capture_output=True, text=True, check=True)
+    return json.loads(sortie.stdout)
 
 PRODUITS = catalogue()
 
@@ -72,7 +74,7 @@ def footer(base):
       <div class="footer__grille">
         <div>
           <p class="footer__logo">Studio Alma</p>
-          <p class="footer__mot">Cinq city bags féminins, pensés pour la ville et faciles à porter, du matin au soir.</p>
+          <p class="footer__mot">Onze city bags féminins, pensés pour la ville et faciles à porter, du matin au soir.</p>
         </div>
         <div>
           <h3>Boutique</h3>
@@ -135,10 +137,13 @@ def page(nom, titre, description, corps, base="", actif="", scripts=""):
 # ------------------------------------------------------------------ fragments
 def carte(p, base="", eager=False):
     charge = "eager" if eager else "lazy"
+    seconde = ""
+    if len(p["images"]) > 1:
+        seconde = (f'\n            <img src="{base}{p["images"][1]}" alt="" aria-hidden="true" '
+                   f'loading="lazy" width="1000" height="1250">')
     return f"""        <a class="carte apparait" href="{base}produit/{p['id']}.html">
           <div class="carte__media">
-            <img src="{base}{p['images'][0]}" alt="{p['nom']} — city bag Studio Alma" loading="{charge}" width="900" height="1125">
-            <img src="{base}{p['images'][1]}" alt="" aria-hidden="true" loading="lazy" width="900" height="1125">
+            <img src="{base}{p['images'][0]}" alt="{p['nom']} — city bag Studio Alma" loading="{charge}" width="1000" height="1250">{seconde}
           </div>
           <div class="carte__infos">
             <p class="carte__nom">{p['nom']}</p>
@@ -171,12 +176,12 @@ accueil = f"""  <section class="hero">
       <div class="section__tete apparait">
         <p class="eyebrow">Automne 2026</p>
         <h2 class="titre-section">La collection</h2>
-        <p class="soustitre">Cinq silhouettes. Une seule obsession : le quotidien.</p>
+        <p class="soustitre">Onze silhouettes. Une seule obsession : le quotidien.</p>
       </div>
       <div class="grille-produits">
 {grille()}
       </div>
-      <p style="text-align:center;margin-top:48px"><a class="lien-souligne" href="sacs.html">Voir les cinq modèles</a></p>
+      <p style="text-align:center;margin-top:48px"><a class="lien-souligne" href="sacs.html">Voir les onze modèles</a></p>
     </div>
   </section>
 
@@ -211,7 +216,7 @@ accueil = f"""  <section class="hero">
   </section>"""
 
 page("index.html", "Studio Alma — City bags féminins pensés pour la ville",
-     f"Cinq city bags féminins à {PRIX}, pensés pour la ville et faciles à porter du matin au soir.",
+     f"Onze city bags féminins à {PRIX}, pensés pour la ville et faciles à porter du matin au soir.",
      accueil, actif="accueil")
 
 # ----------------------------------------------------------------- sacs.html
@@ -219,7 +224,7 @@ sacs = f"""  <section class="page-tete apparait" id="nouveautes">
     <div class="wrap">
       <p class="eyebrow">La collection · Automne 2026</p>
       <h1 class="titre-section">Les sacs</h1>
-      <p class="soustitre">Cinq city bags, cinq personnalités.</p>
+      <p class="soustitre">Onze city bags, onze personnalités.</p>
     </div>
   </section>
 
@@ -239,16 +244,24 @@ sacs = f"""  <section class="page-tete apparait" id="nouveautes">
   </section>"""
 
 page("sacs.html", "Les sacs — Studio Alma",
-     f"Cinq city bags Studio Alma, tous à {PRIX}. Jeanne, Romy, Louise, Victoire, Margot.",
+     f"Onze city bags Studio Alma, tous à {PRIX}, en onze coloris.",
      sacs, actif="sacs")
 
 # -------------------------------------------------------------- pages produit
 def page_produit(p):
     autres = [a for a in PRODUITS if a["id"] != p["id"]][:3]
-    minis = "\n".join(
-        f'            <button type="button" data-miniature="../{img}" aria-current="{str(i == 0).lower()}" aria-label="Vue {i+1}">'
-        f'<img src="../{img}" alt="" loading="lazy"></button>'
-        for i, img in enumerate(p["images"]))
+    vues = "\n".join(
+        f'      <div class="galerie__vue"><img src="../{img}" alt="{p["nom"]}, vue {i+1}" '
+        f'loading="lazy" width="1000" height="1250"></div>'
+        for i, img in enumerate(p["images"][1:], start=2))
+    minis = ""
+    if len(p["images"]) > 1:
+        boutons = "\n".join(
+            f'            <button type="button" data-miniature="../{img}" aria-current="{str(i == 0).lower()}" aria-label="Vue {i+1}">'
+            f'<img src="../{img}" alt="" loading="lazy"></button>'
+            for i, img in enumerate(p["images"]))
+        minis = f'      <div class="galerie__miniatures">\n{boutons}\n      </div>'
+    couleur = p.get("couleur", "")
     accordeons = [
         ("Détails", p["details"]),
         ("Dimensions", p["dimensions"]),
@@ -265,17 +278,15 @@ def page_produit(p):
 
   <div class="wrap produit">
     <div class="galerie apparait">
-      <div class="galerie__vue"><img data-vue src="../{p['images'][0]}" alt="{p['nom']} — city bag Studio Alma" width="900" height="1125" fetchpriority="high"></div>
-      <div class="galerie__vue"><img src="../{p['images'][1]}" alt="{p['nom']}, vue détail" loading="lazy" width="900" height="1125"></div>
-      <div class="galerie__miniatures">
+      <div class="galerie__vue"><img data-vue src="../{p['images'][0]}" alt="{p['nom']} — city bag Studio Alma" width="1000" height="1250" fetchpriority="high"></div>
+{vues}
 {minis}
-      </div>
     </div>
 
     <div class="panneau apparait">
       <h1 class="panneau__nom">{p['nom']}</h1>
       <p class="panneau__prix">{PRIX}</p>
-      <p class="panneau__type">{p['type']}</p>
+      <p class="panneau__type">{p['type']} · {couleur}</p>
       <p class="panneau__desc">{p['description']}</p>
       <button class="btn btn--bloc" type="button" data-ajouter="{p['id']}">Ajouter au panier</button>
       <div class="rassurances">
@@ -325,9 +336,9 @@ apropos = f"""  <section class="page-tete apparait">
     <div class="wrap texte-long apparait">
       <p>Studio Alma est née d'une idée simple : un sac qui suit la journée entière, sans qu'on ait
       à y penser. Le métro le matin, le bureau, un café, un dîner. Rien de plus.</p>
-      <h2>Cinq modèles</h2>
-      <p>Nous dessinons cinq sacs, pas trente. Jeanne, Romy, Louise, Victoire et Margot :
-      cinq formes qui couvrent à peu près tout ce qu'une journée demande.</p>
+      <h2>Onze modèles</h2>
+      <p>Un city bag, onze coloris. De quoi trouver celui qui vous ressemble
+      sans passer une heure à choisir.</p>
       <h2>Un seul prix</h2>
       <p>Tous nos sacs coûtent {PRIX}. Pas de promotion permanente, pas de calcul compliqué :
       vous choisissez la forme qui vous ressemble, le prix ne change rien.</p>
@@ -362,7 +373,7 @@ page_texte("livraison.html", "Livraison &amp; retours",
             ("Retours", "30 jours pour changer d'avis. Retour gratuit, remboursement sous 5 jours après réception.")])
 
 page_texte("faq.html", "FAQ", "Les questions qu'on nous pose le plus souvent.",
-           [("Tous les sacs sont-ils au même prix ?", f"Oui. Les cinq modèles sont à {PRIX}, toute l'année."),
+           [("Tous les sacs sont-ils au même prix ?", f"Oui. Les onze modèles sont à {PRIX}, toute l'année."),
             ("Quelles matières utilisez-vous ?", "Un extérieur enduit façon cuir et une doublure en coton recyclé."),
             ("Comment entretenir mon sac ?", "Un chiffon doux légèrement humide suffit. Évitez les produits abrasifs."),
             ("Puis-je échanger un modèle ?", "Oui, sous 30 jours. Écrivez-nous et nous nous occupons du reste.")])
