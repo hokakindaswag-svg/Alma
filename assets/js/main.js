@@ -31,6 +31,12 @@
     majCompteur();
   }
 
+  function lienPaiement(id) {
+    var config = window.ALMA_PAIEMENT || {};
+    var liens = config.liens || {};
+    return (liens[id] || config.defaut || "").trim();
+  }
+
   function total(lignes) {
     return lignes.reduce(function (s, l) { return s + l.qte * (produit(l.id) || {}).prix; }, 0);
   }
@@ -64,18 +70,11 @@
   }
 
   /* ------------------------------------------------------------------ panier */
-  function ajouter(id, qte) {
-    var lignes = lire();
-    var ligne = lignes.filter(function (l) { return l.id === id; })[0];
-    if (ligne) { ligne.qte += qte || 1; }
-    else { lignes.push({ id: id, qte: qte || 1 }); }
-    ecrire(lignes);
-  }
-
-  function changer(id, delta) {
-    var lignes = lire();
-    lignes.forEach(function (l) { if (l.id === id) { l.qte += delta; } });
-    ecrire(lignes.filter(function (l) { return l.qte > 0; }));
+  /* Un seul sac par panier : ajouter un modèle remplace celui qui s'y trouve. */
+  function ajouter(id) {
+    var precedent = lire()[0];
+    ecrire([{ id: id, qte: 1 }]);
+    return precedent && precedent.id !== id ? produit(precedent.id) : null;
   }
 
   function retirer(id) {
@@ -87,11 +86,34 @@
     if (btn) {
       e.preventDefault();
       var id = btn.getAttribute("data-ajouter");
-      ajouter(id, 1);
+      var remplace = ajouter(id);
       var p = produit(id);
-      toast((p ? p.nom : "Article") + " ajouté au panier");
+      toast(remplace
+        ? (p ? p.nom : "Article") + " remplace " + remplace.nom + " dans votre panier"
+        : (p ? p.nom : "Article") + " ajouté au panier");
+    }
+
+    var achat = e.target.closest("[data-acheter]");
+    if (achat) {
+      e.preventDefault();
+      var idAchat = achat.getAttribute("data-acheter");
+      var lien = lienPaiement(idAchat);
+      if (!lien) { return; }
+      ajouter(idAchat);
+      window.location.href = lien;
     }
   });
+
+  /* Les boutons d'achat direct restent inactifs tant qu'aucun lien de
+     paiement n'est renseigné dans assets/js/paiement.js. */
+  function majBoutonsAchat(racine) {
+    [].forEach.call((racine || document).querySelectorAll("[data-acheter]"), function (b) {
+      var pret = !!lienPaiement(b.getAttribute("data-acheter"));
+      b.disabled = !pret;
+      b.setAttribute("aria-disabled", String(!pret));
+      b.title = pret ? "" : "Paiement bientôt disponible";
+    });
+  }
 
   /* ------------------------------------------------------------ menu mobile */
   var menu = document.querySelector(".menu-mobile");
@@ -174,14 +196,9 @@
           "<div>" +
             '<a class="ligne-panier__nom" href="' + BASE + "produit/" + p.id + '.html">' + p.nom + "</a>" +
             '<div class="ligne-panier__meta">' + p.type + " · " + euros(p.prix) + "</div>" +
-            '<div class="qte">' +
-              '<button type="button" data-moins="' + p.id + '" aria-label="Retirer un exemplaire">−</button>' +
-              "<span>" + l.qte + "</span>" +
-              '<button type="button" data-plus="' + p.id + '" aria-label="Ajouter un exemplaire">+</button>' +
-            "</div>" +
             '<button type="button" class="supprimer" data-supprimer="' + p.id + '">Supprimer</button>' +
           "</div>" +
-          "<div>" + euros(p.prix * l.qte) + "</div>" +
+          "<div>" + euros(p.prix) + "</div>" +
         "</div>"
       );
     }).join("");
@@ -196,26 +213,22 @@
           '<div class="recap__ligne"><span>Sous-total</span><span>' + euros(somme) + "</span></div>" +
           '<div class="recap__ligne"><span>Livraison</span><span>Offerte</span></div>' +
           '<div class="recap__ligne recap__total"><span>Total</span><span>' + euros(somme) + "</span></div>" +
-          '<button class="btn btn--bloc" type="button" data-commander>Passer commande</button>' +
-          '<p class="recap__note">Livraison offerte sur toutes les commandes</p>' +
+          '<button class="btn btn--bloc" type="button" data-acheter="' + lignes[0].id + '">Passer commande</button>' +
+          '<p class="recap__note">Livraison offerte · un sac par commande</p>' +
         "</aside>" +
       "</div>";
+    majBoutonsAchat(zone);
   }
 
   if (zone) {
     zone.addEventListener("click", function (e) {
-      var plus = e.target.closest("[data-plus]");
-      var moins = e.target.closest("[data-moins]");
       var sup = e.target.closest("[data-supprimer]");
-      var cmd = e.target.closest("[data-commander]");
-      if (plus) { changer(plus.getAttribute("data-plus"), 1); rendrePanier(); }
-      if (moins) { changer(moins.getAttribute("data-moins"), -1); rendrePanier(); }
       if (sup) { retirer(sup.getAttribute("data-supprimer")); rendrePanier(); }
-      if (cmd) { toast("Paiement bientôt disponible"); }
     });
     rendrePanier();
   }
 
   majCompteur();
+  majBoutonsAchat();
   window.addEventListener("storage", function () { majCompteur(); rendrePanier(); });
 })();

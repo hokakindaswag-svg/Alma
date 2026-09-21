@@ -108,6 +108,11 @@ h1, h2, h3 { font-family: var(--serif); font-weight: 300; margin: 0; }
 
 .btn--bloc { display: block; width: 100%; }
 
+/* Achat direct : inactif tant qu'aucun lien de paiement n'est renseigné */
+.btn--achat { margin-top: 10px; }
+.btn[disabled] { opacity: 0.4; cursor: not-allowed; }
+.btn--ligne[disabled]:hover { background: transparent; color: var(--chocolat); }
+
 .lien-souligne {
   font-size: 11px;
   letter-spacing: 0.18em;
@@ -402,10 +407,7 @@ h1, h2, h3 { font-family: var(--serif); font-weight: 300; margin: 0; }
 .ligne-panier__img img { width: 100%; height: 100%; object-fit: cover; }
 .ligne-panier__nom { font-family: var(--serif); font-size: 21px; }
 .ligne-panier__meta { font-size: 12px; color: var(--taupe); letter-spacing: 0.06em; }
-.qte { display: inline-flex; align-items: center; border: 1px solid var(--ligne); margin-top: 12px; }
-.qte button { width: 32px; height: 32px; line-height: 1; }
-.qte span { min-width: 26px; text-align: center; font-size: 13px; font-variant-numeric: tabular-nums; }
-.supprimer { display: block; margin-top: 10px; font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--taupe); border-bottom: 1px solid var(--ligne); }
+.supprimer { display: block; margin-top: 12px; font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--taupe); border-bottom: 1px solid var(--ligne); }
 .supprimer:hover { color: var(--bordeaux); }
 
 .recap { background: var(--ivoire); padding: 28px; }

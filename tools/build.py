@@ -126,6 +126,7 @@ def page(nom, titre, description, corps, base="", actif="", scripts=""):
 {footer(base)}
 
 <script src="{base}assets/js/produits.js"></script>
+<script src="{base}assets/js/paiement.js"></script>
 <script src="{base}assets/js/main.js"></script>{scripts}
 </body>
 </html>
@@ -289,6 +290,7 @@ def page_produit(p):
       <p class="panneau__type">{p['type']} · {couleur}</p>
       <p class="panneau__desc">{p['description']}</p>
       <button class="btn btn--bloc" type="button" data-ajouter="{p['id']}">Ajouter au panier</button>
+      <button class="btn btn--bloc btn--ligne btn--achat" type="button" data-acheter="{p['id']}">Acheter maintenant</button>
       <div class="rassurances">
         <span>Livraison offerte</span><span>Paiement sécurisé</span><span>Retours faciles</span>
       </div>

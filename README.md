@@ -24,6 +24,7 @@ panier.html           panier (localStorage)
 a-propos.html, livraison.html, faq.html, contact.html, compte.html
 assets/css/style.css  feuille de style unique
 assets/js/produits.js catalogue (source unique : noms, prix, textes, images)
+assets/js/paiement.js liens de paiement des boutons « Acheter maintenant »
 assets/js/main.js     panier, menu mobile, galerie, accordéons, apparitions
 assets/img/           visuels placeholders (SVG)
 tools/build.py        régénère les pages HTML depuis le gabarit commun
@@ -48,6 +49,30 @@ apparaissent automatiquement dès qu'un modèle a plusieurs photos).
 
 Direction photo : Paris, cafés, rues pavées, métro, appartements, lumière
 naturelle. Palette crème, chocolat, taupe, noir doux, bordeaux.
+
+## Panier
+
+Le panier ne contient qu'un seul sac : ajouter un autre modèle remplace
+celui qui s'y trouve, avec un message discret. Pas de quantité à gérer.
+
+## Activer le paiement
+
+Les boutons « Acheter maintenant » (fiche produit) et « Passer commande »
+(panier) renvoient vers un lien de paiement externe. Tant qu'aucun lien
+n'est renseigné, ils restent inactifs et grisés.
+
+Pour les activer, ouvrez `assets/js/paiement.js` et renseignez soit un lien
+commun dans `defaut`, soit un lien par modèle dans `liens` :
+
+```js
+window.ALMA_PAIEMENT = {
+  defaut: "",
+  liens: { jeanne: "https://buy.stripe.com/xxxxxxxx", ... }
+};
+```
+
+Tout lien https convient : lien de paiement Stripe, bouton PayPal, checkout
+Shopify. Aucune régénération des pages n'est nécessaire après modification.
 
 ## Modifier le contenu
 
