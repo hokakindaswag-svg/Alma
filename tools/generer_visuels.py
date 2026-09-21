@@ -171,8 +171,7 @@ def scene(nom, w, h, teinte, variante):
     s.append('</svg>')
     open(f"{OUT}/{nom}.svg", "w").write("".join(s))
 
-scene("hero", 1800, 1000, CREME2, "hero")
-scene("hero-mobile", 1000, 1250, CREME2, "hero")
-scene("editorial", 1800, 850, CREME, "edito")
-scene("apropos", 1400, 1000, CREME, "edito")
+# Les scènes lifestyle sont désormais de vraies photos (hero.jpg, editorial.jpg).
+# La fonction scene() reste disponible pour regénérer un placeholder si besoin :
+#   scene("hero", 1800, 1000, CREME2, "hero")
 print("SVG générés :", len(os.listdir(OUT)))

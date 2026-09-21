@@ -25,7 +25,7 @@ def header(base, actif):
     def lien(href, texte, cle):
         cur = ' aria-current="page"' if cle == actif else ""
         return f'<a href="{base}{href}"{cur}>{texte}</a>'
-    return f"""  <p class="bandeau">Livraison offerte dès 50 €<span class="bandeau__suite"> · Retours sous 30 jours</span></p>
+    return f"""  <p class="bandeau">Livraison offerte sur toutes les commandes<span class="bandeau__suite"> · Retours sous 30 jours</span></p>
   <header class="header">
     <div class="wrap header__inner">
       <button class="burger" type="button" data-ouvrir-menu aria-label="Ouvrir le menu">
@@ -61,7 +61,7 @@ def header(base, actif):
       <a href="{base}panier.html">Panier</a>
     </nav>
     <div class="menu-mobile__bas">
-      <span>Tous les sacs · {PRIX}</span>
+      <span>Tous les sacs · {PRIX} · Livraison offerte</span>
       <span>Instagram · TikTok</span>
     </div>
   </div>"""
@@ -154,8 +154,8 @@ def grille(base=""):
 accueil = f"""  <section class="hero">
     <div class="hero__media">
       <picture>
-        <source media="(max-width: 759px)" srcset="assets/img/hero-mobile.svg">
-        <img src="assets/img/hero.svg" alt="Jeune femme dans une rue parisienne en automne avec un city bag Studio Alma" width="1800" height="1000" fetchpriority="high">
+        <source media="(max-width: 759px)" srcset="assets/img/hero-mobile.jpg">
+        <img src="assets/img/hero.jpg" alt="Jeune femme dans la rue avec son city bag Studio Alma et un café" width="1200" height="637" fetchpriority="high">
       </picture>
       <div class="hero__voile"></div>
     </div>
@@ -182,7 +182,10 @@ accueil = f"""  <section class="hero">
 
   <section class="editorial">
     <div class="editorial__media">
-      <img src="assets/img/editorial.svg" alt="Scène de rue parisienne, lumière douce d'automne" loading="lazy" width="1800" height="850">
+      <picture>
+        <source media="(max-width: 759px)" srcset="assets/img/editorial-mobile.jpg">
+        <img src="assets/img/editorial.jpg" alt="City bag Studio Alma posé sur une table de café, avec un café et une viennoiserie" loading="lazy" width="1200" height="562">
+      </picture>
     </div>
     <div class="editorial__voile"></div>
     <div class="editorial__contenu apparait">
@@ -201,7 +204,7 @@ accueil = f"""  <section class="hero">
 
   <section class="section">
     <div class="wrap trio apparait">
-      <div><h3>Livraison rapide</h3><p>Expédition sous 24 h, partout en France.</p></div>
+      <div><h3>Livraison offerte</h3><p>Sur toutes les commandes, sans minimum.</p></div>
       <div><h3>Paiement sécurisé</h3><p>Carte, Apple Pay, PayPal.</p></div>
       <div><h3>Retours faciles</h3><p>30 jours pour changer d'avis.</p></div>
     </div>
@@ -276,7 +279,7 @@ def page_produit(p):
       <p class="panneau__desc">{p['description']}</p>
       <button class="btn btn--bloc" type="button" data-ajouter="{p['id']}">Ajouter au panier</button>
       <div class="rassurances">
-        <span>Livraison rapide</span><span>Paiement sécurisé</span><span>Retours faciles</span>
+        <span>Livraison offerte</span><span>Paiement sécurisé</span><span>Retours faciles</span>
       </div>
       <div class="accordeons">
 {blocs}
@@ -314,7 +317,7 @@ apropos = f"""  <section class="page-tete apparait">
 
   <div class="editorial">
     <div class="editorial__media" style="aspect-ratio:16/7.5">
-      <img src="assets/img/apropos.svg" alt="Ambiance parisienne, lumière naturelle" loading="lazy" width="1400" height="1000">
+      <img src="assets/img/editorial.jpg" alt="City bag Studio Alma sur une table de café" loading="lazy" width="1200" height="562">
     </div>
   </div>
 
@@ -355,7 +358,7 @@ page_texte("livraison.html", "Livraison &amp; retours",
            "Tout ce qu'il faut savoir, en quelques lignes.",
            [("Expédition", "Toutes les commandes partent sous 24 h ouvrées depuis la France."),
             ("Délais", "2 à 4 jours en France métropolitaine, 3 à 7 jours en Europe."),
-            ("Frais", "3,90 € en France, offerts dès 50 € d'achat."),
+            ("Frais", "La livraison est offerte sur toutes les commandes, sans minimum d'achat."),
             ("Retours", "30 jours pour changer d'avis. Retour gratuit, remboursement sous 5 jours après réception.")])
 
 page_texte("faq.html", "FAQ", "Les questions qu'on nous pose le plus souvent.",

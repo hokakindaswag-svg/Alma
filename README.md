@@ -2,6 +2,7 @@
 
 Site e-commerce statique d'une marque française de city bags.
 Cinq modèles — Jeanne, Romy, Louise, Victoire, Margot — tous à 19,99 €.
+Livraison offerte sur toutes les commandes.
 
 ## Lancer le site
 
@@ -27,9 +28,12 @@ assets/img/           visuels placeholders (SVG)
 tools/build.py        régénère les pages HTML depuis le gabarit commun
 ```
 
-## Remplacer les visuels par de vraies photos
+## Visuels
 
-Les images sont des placeholders SVG, pensés pour être remplacés tels quels.
+Le hero et la section éditoriale utilisent de vraies photos
+(`assets/img/hero.jpg`, `hero-mobile.jpg`, `editorial.jpg`, `editorial-mobile.jpg`).
+Les photos produits sont encore des placeholders SVG, pensés pour être
+remplacés tels quels.
 
 1. Déposez vos photos dans `assets/img/` (ratio 4/5 pour les produits,
    16/8.5 pour le hero, 16/7.5 pour les bandeaux éditoriaux).

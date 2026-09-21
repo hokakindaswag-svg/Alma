@@ -194,11 +194,10 @@
         '<aside class="recap">' +
           "<h2>Récapitulatif</h2>" +
           '<div class="recap__ligne"><span>Sous-total</span><span>' + euros(somme) + "</span></div>" +
-          '<div class="recap__ligne"><span>Livraison</span><span>' + (somme >= 50 ? "Offerte" : "3,90 €") + "</span></div>" +
-          '<div class="recap__ligne recap__total"><span>Total</span><span>' +
-            euros(somme + (somme >= 50 ? 0 : 3.9)) + "</span></div>" +
+          '<div class="recap__ligne"><span>Livraison</span><span>Offerte</span></div>' +
+          '<div class="recap__ligne recap__total"><span>Total</span><span>' + euros(somme) + "</span></div>" +
           '<button class="btn btn--bloc" type="button" data-commander>Passer commande</button>' +
-          '<p class="recap__note">Livraison offerte dès 50 €</p>' +
+          '<p class="recap__note">Livraison offerte sur toutes les commandes</p>' +
         "</aside>" +
       "</div>";
   }
